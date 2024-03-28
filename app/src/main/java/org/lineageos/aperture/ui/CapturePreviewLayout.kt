@@ -13,16 +13,17 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import org.lineageos.aperture.R
-import org.lineageos.aperture.camera.CameraViewModel
 import org.lineageos.aperture.ext.*
+import org.lineageos.aperture.models.MediaType
+import org.lineageos.aperture.models.Rotation
 import org.lineageos.aperture.utils.ExifUtils
-import org.lineageos.aperture.utils.MediaType
-import org.lineageos.aperture.utils.Rotation
+import org.lineageos.aperture.viewmodels.CameraViewModel
 import java.io.InputStream
 
 /**
@@ -42,6 +43,10 @@ class CapturePreviewLayout(context: Context, attrs: AttributeSet?) : ConstraintL
     private val imageView by lazy { findViewById<ImageView>(R.id.imageView) }
     private val videoView by lazy { findViewById<PlayerView>(R.id.videoView) }
 
+    private val screenRotationObserver = Observer { screenRotation: Rotation ->
+        updateViewsRotation(screenRotation)
+    }
+
     /**
      * input is null == canceled
      * input is not null == confirmed
@@ -50,26 +55,24 @@ class CapturePreviewLayout(context: Context, attrs: AttributeSet?) : ConstraintL
 
     internal var cameraViewModel: CameraViewModel? = null
         set(value) {
-            val lifecycleOwner = findViewTreeLifecycleOwner() ?: return
-
             // Unregister
-            field?.screenRotation?.removeObservers(lifecycleOwner)
+            field?.screenRotation?.removeObserver(screenRotationObserver)
 
             field = value
 
-            value?.let { cameraViewModel ->
-                cameraViewModel.screenRotation.observe(lifecycleOwner) {
-                    val screenRotation = it ?: return@observe
+            val lifecycleOwner = findViewTreeLifecycleOwner() ?: return
 
-                    updateViewsRotation(screenRotation)
-                }
-            }
+            value?.screenRotation?.observe(lifecycleOwner, screenRotationObserver)
         }
     private val screenRotation
         get() = cameraViewModel?.screenRotation?.value ?: Rotation.ROTATION_0
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
+
+        setOnClickListener {
+            // Prevent clicks behind the view
+        }
 
         cancelButton.setOnClickListener {
             stopPreview()
@@ -123,6 +126,7 @@ class CapturePreviewLayout(context: Context, attrs: AttributeSet?) : ConstraintL
                     imageView.setImageBitmap(bitmap)
                 }
             }
+
             MediaType.VIDEO -> {
                 exoPlayer = ExoPlayer.Builder(context)
                     .build()

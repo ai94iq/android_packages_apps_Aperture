@@ -28,16 +28,13 @@
     <string name="grid_on_4">GRADE 4x4</string>
     <string name="grid_on_goldenratio">GRADE φ</string>
     <string name="settings">CONFIGURAÇÕES</string>
-    <string name="selector_photo">FOTO</string>
-    <string name="select_video">VÍDEO</string>
-    <string name="select_scan">DIGITALIZAR</string>
     <string name="app_permissions_toast">Permissões não concedidas pelo usuário.</string>
     <string name="qr_copy_description">Copiar para a área de transferência</string>
     <string name="qr_icon_description">Ícone</string>
     <string name="qr_share_description">Compartilhar</string>
-    <string name="qr_wifi_title">Conectar-se a esta rede Wi-Fi</string>
     <string name="qr_dpp_description">Configurar este dispositivo</string>
     <string name="qr_text">Texto</string>
+    <string name="qr_wifi_title">Conectar-se a esta rede Wi-Fi</string>
     <string name="title_activity_settings">Configurações</string>
     <string name="general_header">Geral</string>
     <string name="photos_header">Fotos</string>

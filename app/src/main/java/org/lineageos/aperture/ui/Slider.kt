@@ -19,8 +19,9 @@ import android.util.AttributeSet
 import android.view.View
 import org.lineageos.aperture.R
 import org.lineageos.aperture.ext.*
-import org.lineageos.aperture.utils.Rotation
+import org.lineageos.aperture.models.Rotation
 
+@Suppress("PrivateResource")
 abstract class Slider @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
@@ -101,9 +102,8 @@ abstract class Slider @JvmOverloads constructor(
         super.onDraw(canvas)
 
         canvas.let {
-            drawTrack(it)
-            drawThumb(it)
-        }
+        drawTrack(canvas)
+        drawThumb(canvas)
     }
 
     abstract fun track(): RectF

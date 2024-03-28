@@ -1,15 +1,21 @@
+/*
+ * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
+    namespace = "com.google.android.apps.googlecamera.fishfood"
 
     defaultConfig {
         applicationId = "com.google.android.apps.googlecamera.fishfood"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
